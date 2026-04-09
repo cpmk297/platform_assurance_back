@@ -26,9 +26,9 @@ from app.transcrire import (
     TranscrirePermisConduire,
     TranscrireCarteGrise
 )
-import models
-import schemas
-from database import get_db
+import app.models as models
+import app.schemas as schemas
+from app.database import get_db
 
 load_dotenv()
 

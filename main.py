@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from app.routers import main_route, visite_t_postgres
-from database import engine, Base
+from app.database import engine, Base
 
 Base.metadata.create_all(engine)
 

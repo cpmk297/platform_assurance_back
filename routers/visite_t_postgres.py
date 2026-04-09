@@ -1,8 +1,8 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
-from database import get_db
+from app.database import get_db
 from fastapi.routing import APIRouter
-import schemas, models
+import app.schemas as schemas, app.models as models
 
 
 router = APIRouter(prefix= "/Visite_technique_formulaire", tags= ["formulaire visite technique"])
