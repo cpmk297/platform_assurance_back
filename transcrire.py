@@ -17,26 +17,27 @@ model = ChatGroq(model= "meta-llama/llama-4-scout-17b-16e-instruct", temperature
 
 class VisiteInfo(BaseModel):
     centre: Optional[str] = Field(default=None, description="à droite de CENTRE dans le document")
-    mtt: Optional[str] = Field(default=None, description="à droite de MTT dans le document")
+    mtt: Optional[float] = Field(default=None, description="à droite de MTT dans le document")
     cat: Optional[str] = Field(default=None, description="à droite CAT dans le document")
     kms: Optional[str] = Field(default=None, description="à droite de KMS dans le document")
     stat: Optional[str] = Field(default=None, description="à droite de STAT dans le document")
     ville: Optional[str] = Field(default=None, description="Le nom de la ville")
     immatriculation: Optional[str] = Field(default=None, description="Juste en dessous de Immatriculation")
-    expiration: Optional[str] = Field(default=None, description="date d'expiration juste en dessous de Expiration")
+    expiration: Optional[date] = Field(default=None, description="date d'expiration juste en dessous de Expiration")
     marque: Optional[str] = Field(default=None, description="à droite de MARQUE")
     type: Optional[str] = Field(default=None, description="à droite de TYPE")
     numero_serie: Optional[str] = Field(default=None, description="à droite de N° SERIE")
-    puis_fis_cv: Optional[str] = Field(default=None, description="à droite de PUIS.FIS.(CV) juste au dessus de MISE EN CIRC.")
-    mise_en_circulation: Optional[str] = Field(default=None, description="la date à droite de MISE EN CIRC")
+    puis_fis_cv: Optional[int] = Field(default=None, description="à droite de PUIS.FIS.(CV) juste au dessus de MISE EN CIRC.")
+    mise_en_circulation: Optional[date] = Field(default=None, description="la date à droite de MISE EN CIRC")
     observations: Optional[str] = Field(default=None, description="à droite de OBSERVATIONS")
-    quotite: Optional[str] = Field(default=None, description="Juste en dessous de QUOTITE")
+    quotite: Optional[float] = Field(default=None, description="Juste en dessous de QUOTITE")
     numero_vignette: Optional[str] = Field(default=None, description="Juste en dessous de N° VIGNETTE")
     ncc: Optional[str] = Field(default=None, description="Juste en dessous de NCC (peut être vide)")
     responsable: Optional[str] = Field(default=None, description="Juste en dessous de RESPONSABLE")
 
 agent_visite_technique = create_agent(model = model, system_prompt= "Tu es un assistant qui transcris les informations essentielles d'un certificat de visite technique et de vignette en json, les dates sont au format DD-MM-YYYY," \
-"je veux que tu les retourne en YYYY-DD-MM" 
+"je veux que tu les retourne en YYYY-DD-MM. Lorsque des champs mtt, et quotite sont extraites, considère les comme" \
+"des valeurs numériques et enlève l'unité(F)" 
                      ,response_format= ToolStrategy(VisiteInfo))
 
 class TranscrireVisite:
@@ -74,22 +75,22 @@ class FactureInfo(BaseModel):
     # ── Lignes de détail (aplaties) ───────────────────────────
     lignes_descriptions:         Optional[List[str]] = Field(default=None, description="Liste des descriptions/libellés de chaque ligne article ou service")
     lignes_references:           Optional[List[str]] = Field(default=None, description="Liste des références ou codes article de chaque ligne")
-    lignes_quantites:            Optional[List[str]] = Field(default=None, description="Liste des quantités de chaque ligne")
+    lignes_quantites:            Optional[List[int]] = Field(default=None, description="Liste des quantités de chaque ligne")
     lignes_unites:               Optional[List[str]] = Field(default=None, description="Liste des unités de mesure de chaque ligne (pcs, kg, h…)")
-    lignes_prix_unitaires:       Optional[List[str]] = Field(default=None, description="Liste des prix unitaires HT de chaque ligne")
-    lignes_taux_tva:             Optional[List[str]] = Field(default=None, description="Liste des taux de TVA de chaque ligne (ex: 18%)")
-    lignes_montants_ht:          Optional[List[str]] = Field(default=None, description="Liste des montants HT de chaque ligne")
-    lignes_montants_ttc:         Optional[List[str]] = Field(default=None, description="Liste des montants TTC de chaque ligne")
+    lignes_prix_unitaires:       Optional[List[float]] = Field(default=None, description="Liste des prix unitaires HT de chaque ligne")
+    lignes_taux_tva:             Optional[List[float]] = Field(default=None, description="Liste des taux de TVA de chaque ligne (ex: 18%)")
+    lignes_montants_ht:          Optional[List[float]] = Field(default=None, description="Liste des montants HT de chaque ligne")
+    lignes_montants_ttc:         Optional[List[float]] = Field(default=None, description="Liste des montants TTC de chaque ligne")
 
     # ── Totaux ───────────────────────────────────────────────
-    total_ht:                    Optional[str]  = Field(default=None, description="Total hors taxes, souvent après TOTAL HT ou MONTANT HT")
-    remise:                      Optional[str]  = Field(default=None, description="Remise ou réduction globale appliquée")
-    total_ht_apres_remise:       Optional[str]  = Field(default=None, description="Total HT après déduction de la remise")
-    montant_tva:                 Optional[str]  = Field(default=None, description="Montant de la TVA, souvent après TVA ou MONTANT TVA")
-    taux_tva_global:             Optional[str]  = Field(default=None, description="Taux de TVA global appliqué sur la facture (ex: 18%)")
-    total_ttc:                   Optional[str]  = Field(default=None, description="Total toutes taxes comprises, souvent après TOTAL TTC ou NET A PAYER")
-    acompte:                     Optional[str]  = Field(default=None, description="Acompte déjà versé, souvent après ACOMPTE ou AVANCE")
-    reste_a_payer:               Optional[str]  = Field(default=None, description="Reste à payer après déduction de l'acompte")
+    total_ht:                    Optional[float]  = Field(default=None, description="Total hors taxes, souvent après TOTAL HT ou MONTANT HT")
+    remise:                      Optional[float]  = Field(default=None, description="Remise ou réduction globale appliquée")
+    total_ht_apres_remise:       Optional[float]  = Field(default=None, description="Total HT après déduction de la remise")
+    montant_tva:                 Optional[float]  = Field(default=None, description="Montant de la TVA, souvent après TVA ou MONTANT TVA")
+    taux_tva_global:             Optional[float]  = Field(default=None, description="Taux de TVA global appliqué sur la facture (ex: 18%)")
+    total_ttc:                   Optional[float]  = Field(default=None, description="Total toutes taxes comprises, souvent après TOTAL TTC ou NET A PAYER")
+    acompte:                     Optional[float]  = Field(default=None, description="Acompte déjà versé, souvent après ACOMPTE ou AVANCE")
+    reste_a_payer:               Optional[float]  = Field(default=None, description="Reste à payer après déduction de l'acompte")
     devise:                      Optional[str]  = Field(default=None, description="Devise utilisée (XOF, EUR, USD…)")
 
     # ── Paiement ─────────────────────────────────────────────
@@ -109,7 +110,9 @@ class TranscrireFacture:
 
     def transcribe_base64(img_base64):
 
-        result = agent_facture.invoke({"messages": [{"role": "user", "content": [{"type": "text", "text": "Extrais les informations relatives à une facture à partir de cette image. Les dates sont au format DD-MM-YYYY renvoie les au format YYYY-MM-DD"},{"type": "image", "base64": img_base64, "mime_type": "image/png"}]}]})
+        result = agent_facture.invoke({"messages": [{"role": "user", "content": [{"type": "text", "text": "Extrais les informations relatives à une facture à partir de cette image. Les dates sont au format DD-MM-YYYY renvoie les au format YYYY-MM-DD."
+        "Pour les variables qui représente des valeurs numériques comme les taux ou le montant, renvoie des "
+        "valeurs numériques en sortie sans les unités"},{"type": "image", "base64": img_base64, "mime_type": "image/png"}]}]})
 
         return result["structured_response"]
     
@@ -118,10 +121,10 @@ class CniInfoRecto(BaseModel):
 
     Nom: Optional[str] = Field(default=None, description="Nom de famille de la personne titulaire de la carte d'identité")
     Prenom: Optional[str] = Field(default=None, description="Prénom de la personne titulaire de la carte d'identité")
-    Date_de_naissance: Optional[str] = Field(default=None, description="Date de naissance de la personne titulaire de la carte d'identité au format YYYY-MM-DD")
-    Lieu_de_naissance: Optional[str] = Field(default=None, description="Lieu de naissance de la personne titulaire de la carte d'identité")
+    Date_de_naissance: Optional[date] = Field(default=None, description="Date de naissance de la personne titulaire de la carte d'identité au format YYYY-MM-DD")
+    Lieu_de_naissance: Optional[date] = Field(default=None, description="Lieu de naissance de la personne titulaire de la carte d'identité")
     Sexe: Optional[str] = Field(default=None, description="Sexe de la personne titulaire de la carte d'identité (M ou F)")
-    Taille: Optional[str] = Field(default=None, description="Taille de la personne titulaire de la carte d'identité en cm")
+    Taille: Optional[float] = Field(default=None, description="Taille de la personne titulaire de la carte d'identité en cm")
     Date_d_expiration: Optional[str] = Field(default=None, description="Date d'expiration de la carte d'identité au format YYYY-MM-DD")
     Numero_de_cni: Optional[str] = Field(default=None, description="Numéro de la carte d'identité")
     Nationalite: Optional[str] = Field(default=None, description="Nationalité de la personne titulaire de la carte d'identité")
@@ -161,11 +164,11 @@ class PermisConduireInfo(BaseModel):
 
     Nom: str = Field(default=None, description="Numéro National d'Identification (NNI) présent au verso de la carte d'identité")
     Prenom: str = Field(default=None, description="Profession de la personne titulaire de la carte d'identité, souvent indiquée au verso")
-    Date_naissance: str = Field(default=None, description="Date d'émission de la carte d'identité au format YYYY-MM-DD, souvent indiquée au verso")
+    Date_naissance: date = Field(default=None, description="Date d'émission de la carte d'identité au format YYYY-MM-DD, souvent indiquée au verso")
     Addresse: str = Field(default=None, description="Autorité ayant émis la carte d'identité, souvent indiquée au verso")
-    Lieu_naissance: str = Field(default=None, description="Lieu de naissance de la personne titulaire du permis de conduire")
+    Lieu_naissance: date = Field(default=None, description="Lieu de naissance de la personne titulaire du permis de conduire")
     Lieu_delivrance: str = Field(default=None, description="Lieu de délivrance du permis de conduire")
-    Date_expiration: str = Field(default=None, description="Date d'expiration du permis de conduire au format YYYY-MM-DD")
+    Date_expiration: date = Field(default=None, description="Date d'expiration du permis de conduire au format YYYY-MM-DD")
     Numero_permis: str = Field(default=None, description="Numéro du permis de conduire PC ou N° PERMIS")
     Categories: str = Field(default=None, description="Catégories de véhicules autorisées par le permis de conduire")
 

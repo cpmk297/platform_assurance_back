@@ -168,13 +168,4 @@ def carte_grise(file: UploadFile = File(...)):
     output = TranscrireCarteGrise.transcribe_base64(img_to_base64)
 
     return {"is_carte_grise": dict[classes], "output": output}
-
-
-@router.post('/bdd_visite_tech')
-def create_visite_info(request: schemas.VisiteInfo, db: Session= Depends(get_db)):
-    visite_info = models.VisiteInfo(**request.dict())
-    db.add(visite_info)
-    db.commit()
-    db.refresh(visite_info)
-    return visite_info
     

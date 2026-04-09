@@ -13,3 +13,5 @@ def create_visite_info(request: schemas.VisiteInfo, db: Session= Depends(get_db)
     db.commit()
     db.refresh(visite_info)
     return visite_info
+
+
