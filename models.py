@@ -87,7 +87,7 @@ class FactureInfo(Base):
     cachet_signature = Column(String, nullable=True)
 
 
-class CniInfoRecto(Base):
+class CniInfoRectoVerso(Base):
     __tablename__ = "cni_info_recto"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -95,12 +95,16 @@ class CniInfoRecto(Base):
     nom = Column(String, nullable=True)
     prenom = Column(String, nullable=True)
     date_de_naissance = Column(Date, nullable=True)
-    lieu_de_naissance = Column(Date, nullable=True)
+    lieu_de_naissance = Column(String, nullable=True)
     sexe = Column(String, nullable=True)
     taille = Column(Float, nullable=True)
     date_d_expiration = Column(Date, nullable=True)
     numero_de_cni = Column(String, nullable=True)
     nationalite = Column(String, nullable=True)
+    nni = Column(String, nullable=True)
+    profession = Column(String, nullable=True)
+    date_d_emission = Column(Date, nullable=True)
+    autorite_d_emission = Column(String, nullable=True)
 
 
 class PermisConduireInfo(Base):
@@ -130,16 +134,33 @@ class CarteGrise(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    immatriculation = Column(String, unique=True, index=True, nullable=True)
+    # ── Identifiants ─────────────────────────────
+    numero_immatriculation = Column(String, nullable=True, index=True)
+    numero_carte_grise = Column(String, nullable=True, unique=True, index=True)
 
+    # ── Dates ────────────────────────────────────
+    date_premiere_mise_circulation = Column(Date, nullable=True)
+    date_edition_carte_grise = Column(Date, nullable=True)
+
+    # ── Titulaire ────────────────────────────────
+    identite_titulaire = Column(String, nullable=True)
+
+    # ── Véhicule ────────────────────────────────
     marque = Column(String, nullable=True)
-    modele = Column(String, nullable=True)
+    genre = Column(String, nullable=True)
+    type_commercial = Column(String, nullable=True)
+    couleur = Column(String, nullable=True)
+    carrosserie = Column(String, nullable=True)
+    energie = Column(String, nullable=True)
+    usage_vehicule = Column(String, nullable=True)
 
-    annee = Column(Integer, nullable=True)
+    # ── Caractéristiques techniques ─────────────
+    nombre_essieux = Column(String, nullable=True)
+    places_assises = Column(String, nullable=True)
 
-    proprietaire = Column(String, nullable=True)
-    adresse_proprietaire = Column(String, nullable=True)
+    puissance_fiscale = Column(String, nullable=True)
+    cylindree_cc = Column(String, nullable=True)
 
-    date_1ere_immatriculation = Column(Date, nullable=True)
-
-    numero_chassis = Column(String, unique=True, nullable=True)
+    masse_vehicule = Column(String, nullable=True)  # PTAC
+    pv = Column(String, nullable=True)               # poids à vide
+    cu = Column(String, nullable=True)               # charge utile

@@ -83,17 +83,22 @@ class FactureInfo(BaseModel):
     cachet_signature:            Optional[str]  = Field(default=None, description="Présence d'un cachet ou d'une signature (oui/non)")
 
 
-class CniInfoRecto(BaseModel):
+class CniInfoRectoVerso(BaseModel):
 
     nom: Optional[str] = Field(default=None, description="Nom de famille de la personne titulaire de la carte d'identité")
     prenom: Optional[str] = Field(default=None, description="Prénom de la personne titulaire de la carte d'identité")
     date_de_naissance: Optional[date] = Field(default=None, description="Date de naissance de la personne titulaire de la carte d'identité au format YYYY-MM-DD")
-    lieu_de_naissance: Optional[date] = Field(default=None, description="Lieu de naissance de la personne titulaire de la carte d'identité")
+    lieu_de_naissance: Optional[str] = Field(default=None, description="Lieu de naissance de la personne titulaire de la carte d'identité")
     sexe: Optional[str] = Field(default=None, description="Sexe de la personne titulaire de la carte d'identité (M ou F)")
     taille: Optional[float] = Field(default=None, description="Taille de la personne titulaire de la carte d'identité en cm")
     date_d_expiration: Optional[date] = Field(default=None, description="Date d'expiration de la carte d'identité au format YYYY-MM-DD")
     numero_de_cni: Optional[str] = Field(default=None, description="Numéro de la carte d'identité")
     nationalite: Optional[str] = Field(default=None, description="Nationalité de la personne titulaire de la carte d'identité")
+    nni: str = Field(default=None, description="Numéro National d'Identification (NNI) présent au verso de la carte d'identité")
+    profession: str = Field(default=None, description="Profession de la personne titulaire de la carte d'identité, souvent indiquée au verso")
+    date_d_emission: str = Field(default=None, description="Date d'émission de la carte d'identité au format YYYY-MM-DD, souvent indiquée au verso")
+    autorite_d_emission: str = Field(default=None, description="Autorité ayant émis la carte d'identité, souvent indiquée au verso")
+
 
 
 class PermisConduireInfo(BaseModel):
@@ -102,19 +107,30 @@ class PermisConduireInfo(BaseModel):
     prenom: str = Field(default=None, description="Profession de la personne titulaire de la carte d'identité, souvent indiquée au verso")
     date_naissance: date = Field(default=None, description="Date d'émission de la carte d'identité au format YYYY-MM-DD, souvent indiquée au verso")
     adresse: str = Field(default=None, description="Autorité ayant émis la carte d'identité, souvent indiquée au verso")
-    lieu_naissance: date = Field(default=None, description="Lieu de naissance de la personne titulaire du permis de conduire")
+    lieu_naissance: str = Field(default=None, description="Lieu de naissance de la personne titulaire du permis de conduire")
     lieu_delivrance: str = Field(default=None, description="Lieu de délivrance du permis de conduire")
     date_expiration: date = Field(default=None, description="Date d'expiration du permis de conduire au format YYYY-MM-DD")
     numero_permis: str = Field(default=None, description="Numéro du permis de conduire PC ou N° PERMIS")
     categories: str = Field(default=None, description="Catégories de véhicules autorisées par le permis de conduire")
 
-class CarteGriseInfo(BaseModel):
+class CarteGrise(BaseModel):
 
-    immatriculation: str = Field(default=None, description="Numéro d'immatriculation du véhicule")
-    marque: str = Field(default=None, description="Marque du véhicule")
-    modele: str = Field(default=None, description="Modèle du véhicule")
-    annee: int = Field(default=None, description="Année de fabrication du véhicule")
-    proprietaire: str = Field(default=None, description="Nom du propriétaire du véhicule")
-    adresse_proprietaire: str = Field(default=None, description="Adresse du propriétaire du véhicule")
-    date_1ere_immatriculation: date = Field(default=None, description="Date de première immatriculation du véhicule au format YYYY-MM-DD")
-    numero_chassis: str = Field(default=None, description="Numéro de châssis ou VIN du véhicule")
+    Numero_immatriculation: str = Field(default=None, description="Numéro d'immatriculation du véhicule")
+    Numero_carte_grise: str = Field(default=None, description="Numéro de la carte grise")
+    Date_premiere_mise_circulation: str = Field(default=None, description="Date de première mise en circulation du véhicule au format YYYY-MM-DD")
+    Date_edition_carte_grise: str = Field(default=None, description="Date d'édition de la carte grise au format YYYY-MM-DD")
+    Identite_titulaire: str = Field(default=None, description="Identité du titulaire de la carte grise (nom et prénom)")
+    Marque: str = Field(default=None, description="Marque du véhicule")
+    Genre: str = Field(default=None, description="Genre du véhicule (VP, CTTE, Camion MOTO, etc.)")
+    Type_commercial: str = Field(default=None, description="Type commercial du véhicule")
+    Couleur: str = Field(default=None, description="Couleur du véhicule")
+    Carrosserie: str = Field(default=None, description="Carrosserie du véhicule")
+    Energie: str = Field(default=None, description="Type d'énergie du véhicule (essence, diesel, électrique, Gas-Oil etc.)")        
+    Usage_vehicule: str = Field(default=None, description="Usage du véhicule (particulier, professionnel, privé etc.)")
+    Nombre_essieux: str = Field(default=None, description="Nombre d'essieux du véhicule")
+    Places_assises: str = Field(default=None, description="Nombre de places assises du véhicule")
+    Puissance_fiscale: str = Field(default=None, description="Puissance fiscale du véhicule en CV")
+    Cylindree_CC: str = Field(default=None, description="Cylindrée du véhicule en centimètres cubes (CC)")
+    Masse_vehicule: str = Field(default=None, description=" PTAC ou poids total autorisé en charge du véhicule en kg")
+    PV: str = Field(default=None, description="Poids à vide du véhicule en kg")
+    CU: str = Field(default=None, description="Charge utile du véhicule en kg")

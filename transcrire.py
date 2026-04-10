@@ -148,7 +148,7 @@ class CniInfoVerso(BaseModel):
     Date_emission: str = Field(default=None, description="Date d'émission de la carte d'identité au format YYYY-MM-DD, souvent indiquée au verso")
     Autorite_emission: str = Field(default=None, description="Autorité ayant émis la carte d'identité, souvent indiquée au verso")
 
-agent_cni_verso = create_agent(model = model, system_prompt= "Tu es un assistant qui transcris les informations essentielles d'une carte d'identité", response_format= CniInfoRecto)
+agent_cni_verso = create_agent(model = model, system_prompt= "Tu es un assistant qui transcris les informations essentielles d'une carte d'identité", response_format= CniInfoVerso)
 
 class TranscrireCNIVerso:
 
@@ -166,7 +166,7 @@ class PermisConduireInfo(BaseModel):
     Prenom: str = Field(default=None, description="Profession de la personne titulaire de la carte d'identité, souvent indiquée au verso")
     Date_naissance: date = Field(default=None, description="Date d'émission de la carte d'identité au format YYYY-MM-DD, souvent indiquée au verso")
     Addresse: str = Field(default=None, description="Autorité ayant émis la carte d'identité, souvent indiquée au verso")
-    Lieu_naissance: date = Field(default=None, description="Lieu de naissance de la personne titulaire du permis de conduire")
+    Lieu_naissance: str = Field(default=None, description="Lieu de naissance de la personne titulaire du permis de conduire")
     Lieu_delivrance: str = Field(default=None, description="Lieu de délivrance du permis de conduire")
     Date_expiration: date = Field(default=None, description="Date d'expiration du permis de conduire au format YYYY-MM-DD")
     Numero_permis: str = Field(default=None, description="Numéro du permis de conduire PC ou N° PERMIS")

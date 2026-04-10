@@ -8,7 +8,7 @@ import app.schemas as schemas, app.models as models
 router = APIRouter(prefix= "/facture_bdd", tags= ["formulaire facture"])
 @router.post('/bdd_facture')
 def create_facture_info(request: schemas.FactureInfo, db: Session= Depends(get_db)):
-    facture_info = models.CniInfoRecto(**request.dict())
+    facture_info = models.FactureInfo(**request.dict())
     db.add(facture_info)
     db.commit()
     db.refresh(facture_info)
