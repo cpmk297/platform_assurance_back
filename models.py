@@ -20,7 +20,7 @@ class VisiteInfo(Base):
     puis_fis_cv = Column(Integer, nullable=True)
     mise_en_circulation = Column(Date, nullable=True)
     observations = Column(String, nullable=True)
-    quotite = Column(String, nullable=True)
+    quotite = Column(Integer, nullable=True)
     numero_vignette = Column(String, nullable=True)
     ncc = Column(String, nullable=True)
     responsable = Column(String, nullable=True)
@@ -124,12 +124,12 @@ class PermisConduireInfo(Base):
 
     date_expiration = Column(Date, nullable=True)
 
-    numero_permis = Column(String, unique=True, index=True, nullable=True)
+    numero_permis = Column(String, nullable=True)
 
     categories = Column(String, nullable=True)
 
 
-class CarteGrise(Base):
+class CarteGriseInfo(Base):
     __tablename__ = "carte_grise"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -155,12 +155,12 @@ class CarteGrise(Base):
     usage_vehicule = Column(String, nullable=True)
 
     # ── Caractéristiques techniques ─────────────
-    nombre_essieux = Column(String, nullable=True)
-    places_assises = Column(String, nullable=True)
+    nombre_essieux = Column(Integer, nullable=True)
+    places_assises = Column(Integer, nullable=True)
 
-    puissance_fiscale = Column(String, nullable=True)
-    cylindree_cc = Column(String, nullable=True)
+    puissance_fiscale = Column(Integer, nullable=True)
+    cylindree_cc = Column(Integer, nullable=True)
 
-    masse_vehicule = Column(String, nullable=True)  # PTAC
-    pv = Column(String, nullable=True)               # poids à vide
-    cu = Column(String, nullable=True)               # charge utile
+    masse_vehicule = Column(Integer, nullable=True)  # PTAC
+    pv = Column(Integer, nullable=True)               # poids à vide
+    cu = Column(Integer, nullable=True)               # charge utile

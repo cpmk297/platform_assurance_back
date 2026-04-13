@@ -1,11 +1,15 @@
 import langchain
 from langchain_groq import ChatGroq
+from langchain_ollama import ChatOllama
+from langchain_google_genai import ChatGoogleGenerativeAI
 from PIL import Image
 from langchain.agents import create_agent
 from typing import Optional, List
 from pydantic import Field, BaseModel
 from datetime import date
 from langchain.agents.structured_output import ToolStrategy
+from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
+
 import os
 from dotenv import load_dotenv
 
@@ -13,7 +17,28 @@ load_dotenv()
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
-model = ChatGroq(model= "meta-llama/llama-4-scout-17b-16e-instruct", temperature = 0, api_key= GROQ_API_KEY)
+#GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+
+#print(GROQ_API_KEY)
+
+model = ChatGroq(model = "meta-llama/llama-4-scout-17b-16e-instruct", temperature = 0, api_key = GROQ_API_KEY)
+
+#model = ChatOllama(model="qwen3-vl:4b",temperature=0)
+
+print(model)
+
+#model = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0, api_key= "AIzaSyAk6t0AqJuqreVolR_wBjDXGhBM5xLAbvA")
+
+#llm = HuggingFaceEndpoint(
+#    repo_id="Qwen/Qwen3-VL-4B-Instruct",
+#    task="text-generation",
+#    max_new_tokens=512,
+#    do_sample=False,
+#    repetition_penalty=1.03,
+#    provider="auto",  # let Hugging Face choose the best provider for you
+#)
+
+#model = ChatHuggingFace(llm=llm)
 
 class VisiteInfo(BaseModel):
     centre: Optional[str] = Field(default=None, description="à droite de CENTRE dans le document")
@@ -111,8 +136,9 @@ class TranscrireFacture:
     def transcribe_base64(img_base64):
 
         result = agent_facture.invoke({"messages": [{"role": "user", "content": [{"type": "text", "text": "Extrais les informations relatives à une facture à partir de cette image. Les dates sont au format DD-MM-YYYY renvoie les au format YYYY-MM-DD."
-        "Pour les variables qui représente des valeurs numériques comme les taux ou le montant, renvoie des "
-        "valeurs numériques en sortie sans les unités"},{"type": "image", "base64": img_base64, "mime_type": "image/png"}]}]})
+        "Pour les variables qui représente des valeurs numériques comme les taux ou le montant, extrait uniquement des "
+        "les valeurs numériques en sortie et ignore les autres caractères(il s'agit peut être des unités ou symbôles ou devises ou "
+        "de texte)"},{"type": "image", "base64": img_base64, "mime_type": "image/png"}]}]})
 
         return result["structured_response"]
     
@@ -122,7 +148,7 @@ class CniInfoRecto(BaseModel):
     Nom: Optional[str] = Field(default=None, description="Nom de famille de la personne titulaire de la carte d'identité")
     Prenom: Optional[str] = Field(default=None, description="Prénom de la personne titulaire de la carte d'identité")
     Date_de_naissance: Optional[date] = Field(default=None, description="Date de naissance de la personne titulaire de la carte d'identité au format YYYY-MM-DD")
-    Lieu_de_naissance: Optional[date] = Field(default=None, description="Lieu de naissance de la personne titulaire de la carte d'identité")
+    Lieu_de_naissance: Optional[str] = Field(default=None, description="Lieu de naissance de la personne titulaire de la carte d'identité")
     Sexe: Optional[str] = Field(default=None, description="Sexe de la personne titulaire de la carte d'identité (M ou F)")
     Taille: Optional[float] = Field(default=None, description="Taille de la personne titulaire de la carte d'identité en cm")
     Date_d_expiration: Optional[str] = Field(default=None, description="Date d'expiration de la carte d'identité au format YYYY-MM-DD")
